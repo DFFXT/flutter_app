@@ -81,6 +81,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            GestureDetector(
+              onTapUp: (e){
+                print("---> ${e.globalPosition.dx}");
+              },
+              child: Container(
+                color: Colors.red,
+                margin: EdgeInsets.all(20),
+                child: Material(
+                  elevation: 10,
+                  child: Text("xxxxxxxxx"),
+                )
+            )
+            )
+            ,
             Text(
               'You have pushed the button this many times:',
             ),
