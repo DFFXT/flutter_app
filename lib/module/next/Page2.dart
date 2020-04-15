@@ -45,11 +45,15 @@ class GameSate extends State with SingleTickerProviderStateMixin{
   double left=0;
   AnimationController control;
   Animation<double> animator;
+
+  ScrollController scrollController = ScrollController();
+
   GameSate() {
     a.addAll([SELF, 0, 0, 0, 0, 0, 0,0, 0]);
   }
   @override
   void initState() {
+
     // TODO: implement initState
     super.initState();
 
@@ -76,16 +80,32 @@ class GameSate extends State with SingleTickerProviderStateMixin{
     cellHeight = cellWidth;
 
     return ListView.builder(
+      controller: scrollController,
       padding: EdgeInsets.all(10),
-      itemCount: a.length,
+      itemCount: 100,
       itemBuilder: (ctx, index) {
-        var _type = a[index];
+        //var _type = a[index];
         /*if(index == 8){
           return Test(10,Text("ssss"));
         }*/
   
         return
-          PhysicalShape(
+        Container(
+          height: 100+index.toDouble()*10,
+          child: Container(
+              child:GestureDetector(
+            onTap: (){
+              setState(() {
+                //a.add(index);
+                print("ext "+scrollController.position.maxScrollExtent.toString());
+                scrollController.animateTo(scrollController.position.maxScrollExtent, duration: Duration(seconds: 1), curve: Curves.linear);
+              });
+            },
+            child: Text("$index"),
+          )),
+        )
+        ;
+          /*PhysicalShape(
             color: Colors.transparent,
             clipper: ShapeBorderClipper(
               shape: RoundedRectangleBorder()
@@ -96,7 +116,7 @@ class GameSate extends State with SingleTickerProviderStateMixin{
               margin: EdgeInsets.all(10),
               child: Text("xxxxf"),
             ),
-          );
+          );*/
       /*UnconstrainedBox(
           constrainedAxis: Axis.vertical,
          child: Container(
@@ -136,12 +156,14 @@ class GameSate extends State with SingleTickerProviderStateMixin{
 
 class W extends CustomSingleChildLayout{
 
-
+   static Delegate d = Delegate();
+   Widget child;
+  W(this.child):super(delegate:d,child:child);
 
   @override
   RenderCustomSingleChildLayoutBox createRenderObject(BuildContext context) {
 
-    return RB(4);
+    return RB(3,d,child);
   }
 }
 
@@ -151,7 +173,7 @@ class Test extends SingleChildRenderObjectWidget{
   final double elevation;
   @override
   RenderCustomSingleChildLayoutBox createRenderObject(BuildContext context) {
-    return RB(elevation);
+    return RB(elevation,null,null);
   }
 
   @override
@@ -168,7 +190,22 @@ class Test extends SingleChildRenderObjectWidget{
 
 class RB extends RenderCustomSingleChildLayoutBox{
   double elevation;
-  RB(this.elevation):super(delegate:Delegate());
+  Delegate dd;
+  Widget c;
+  RB(this.elevation,this.dd,this.c):super(delegate:dd);
+
+  @override
+  // TODO: implement size
+  Size get size => super.size;
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    context.canvas.drawRect(Rect.fromLTRB(0, 0, 90, 90), Paint()..color=Colors.red);
+    context.canvas.drawPath(Path()..addRect(Rect.fromLTRB(0,0,90,90)), Paint()..color=Colors.blueAccent
+    ..strokeWidth = 8
+    ..style = PaintingStyle.stroke);
+    super.paint(context, offset);
+  }
 
   @override
   void describeSemanticsConfiguration(SemanticsConfiguration config) {
@@ -176,13 +213,36 @@ class RB extends RenderCustomSingleChildLayoutBox{
     super.describeSemanticsConfiguration(config);
   }
 
+  @override
+  void performResize() {
+
+    super.performResize();
+  }
+
+  @override
+  void performLayout() {
+    super.performLayout();
+  }
+
 }
 
 class Delegate extends SingleChildLayoutDelegate{
 
+  var size =Size(391.4,100);
+
   @override
-  bool shouldRelayout(SingleChildLayoutDelegate oldDelegate) {
-    return false;
+  Size getSize(BoxConstraints constraints) {
+    print(constraints);
+    return size;
+  }
+  @override
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+    return new BoxConstraints.tight(size);
+  }
+
+  @override
+  bool shouldRelayout(Delegate oldDelegate) {
+    return size != oldDelegate.size;
   }
 }
 

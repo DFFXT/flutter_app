@@ -2,6 +2,7 @@ import 'package:exp/base/BasePage.dart';
 import 'package:exp/base/LifeCycleOwner.dart';
 import 'package:exp/module/next/Page2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(MyApp());
@@ -116,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Image.asset("assets/icon_kg.png"),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
