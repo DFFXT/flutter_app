@@ -3,6 +3,7 @@ import 'package:exp/base/TopBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_widgets/flutter_widgets.dart';
 
 class Page2 extends StatefulWidget {
   @override
@@ -39,37 +40,35 @@ double cellHeight = 0;
 const int EMPTY = 0;
 const int SELF = 1;
 
-class GameSate extends State with SingleTickerProviderStateMixin{
+class GameSate extends State with SingleTickerProviderStateMixin {
   List<Widget> cells = List();
   List<int> a = List();
-  double left=0;
+  double left = 0;
   AnimationController control;
   Animation<double> animator;
 
-  ScrollController scrollController = ScrollController();
+  ItemScrollController scrollController = ItemScrollController();
 
   GameSate() {
-    a.addAll([SELF, 0, 0, 0, 0, 0, 0,0, 0]);
+    a.addAll([SELF, 0, 0, 0, 0, 0, 0, 0, 0]);
   }
+
   @override
   void initState() {
-
     // TODO: implement initState
     super.initState();
 
-
-    control = AnimationController (duration: Duration(seconds: 3),vsync: this);
-    animator =new Tween<double>(begin: 0, end: 80).animate(control);
-    control.addListener((){
+    control = AnimationController(duration: Duration(seconds: 3), vsync: this);
+    animator = new Tween<double>(begin: 0, end: 80).animate(control);
+    control.addListener(() {
       setState(() {
         var value = animator.value;
         print(value);
-        if(value == cellWidth){
+        if (value == cellWidth) {
           //left = 0.toDouble();
-        }else{
+        } else {
           left = value.toDouble();
         }
-
       });
     });
   }
@@ -79,15 +78,35 @@ class GameSate extends State with SingleTickerProviderStateMixin{
     cellWidth = MediaQuery.of(context).size.width / 3;
     cellHeight = cellWidth;
 
-    return ListView.builder(
+    return ScrollablePositionedList.builder(
+        itemCount: 100,
+        itemScrollController: scrollController,
+        itemBuilder: (ctx, index) {
+          return Container(
+            height: 50,
+            child: Container(
+                child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  //a.add(index);
+                  scrollController.scrollTo(index: index+11,alignment: 0.6,duration: Duration(seconds: 1),);
+
+                });
+              },
+              child: Text("$index"),
+            )),
+          );
+        });
+
+    /* ListView.builder(
       controller: scrollController,
       padding: EdgeInsets.all(10),
       itemCount: 100,
       itemBuilder: (ctx, index) {
         //var _type = a[index];
-        /*if(index == 8){
+        */ /*if(index == 8){
           return Test(10,Text("ssss"));
-        }*/
+        }*/ /*
   
         return
         Container(
@@ -105,7 +124,7 @@ class GameSate extends State with SingleTickerProviderStateMixin{
           )),
         )
         ;
-          /*PhysicalShape(
+          */ /*PhysicalShape(
             color: Colors.transparent,
             clipper: ShapeBorderClipper(
               shape: RoundedRectangleBorder()
@@ -116,8 +135,8 @@ class GameSate extends State with SingleTickerProviderStateMixin{
               margin: EdgeInsets.all(10),
               child: Text("xxxxf"),
             ),
-          );*/
-      /*UnconstrainedBox(
+          );*/ /*
+      */ /*UnconstrainedBox(
           constrainedAxis: Axis.vertical,
          child: Container(
            color: Colors.brown,
@@ -146,34 +165,33 @@ class GameSate extends State with SingleTickerProviderStateMixin{
              ) ,
            ),
          ),
-        );*/
+        );*/ /*
 
 
       },
-    );
+    );*/
   }
 }
 
-class W extends CustomSingleChildLayout{
+class W extends CustomSingleChildLayout {
+  static Delegate d = Delegate();
+  Widget child;
 
-   static Delegate d = Delegate();
-   Widget child;
-  W(this.child):super(delegate:d,child:child);
+  W(this.child) : super(delegate: d, child: child);
 
   @override
   RenderCustomSingleChildLayoutBox createRenderObject(BuildContext context) {
-
-    return RB(3,d,child);
+    return RB(3, d, child);
   }
 }
 
-class Test extends SingleChildRenderObjectWidget{
-
-  const Test(this.elevation,Widget w):super(child:w);
+class Test extends SingleChildRenderObjectWidget {
+  const Test(this.elevation, Widget w) : super(child: w);
   final double elevation;
+
   @override
   RenderCustomSingleChildLayoutBox createRenderObject(BuildContext context) {
-    return RB(elevation,null,null);
+    return RB(elevation, null, null);
   }
 
   @override
@@ -188,11 +206,12 @@ class Test extends SingleChildRenderObjectWidget{
   }
 }
 
-class RB extends RenderCustomSingleChildLayoutBox{
+class RB extends RenderCustomSingleChildLayoutBox {
   double elevation;
   Delegate dd;
   Widget c;
-  RB(this.elevation,this.dd,this.c):super(delegate:dd);
+
+  RB(this.elevation, this.dd, this.c) : super(delegate: dd);
 
   @override
   // TODO: implement size
@@ -200,10 +219,14 @@ class RB extends RenderCustomSingleChildLayoutBox{
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    context.canvas.drawRect(Rect.fromLTRB(0, 0, 90, 90), Paint()..color=Colors.red);
-    context.canvas.drawPath(Path()..addRect(Rect.fromLTRB(0,0,90,90)), Paint()..color=Colors.blueAccent
-    ..strokeWidth = 8
-    ..style = PaintingStyle.stroke);
+    context.canvas
+        .drawRect(Rect.fromLTRB(0, 0, 90, 90), Paint()..color = Colors.red);
+    context.canvas.drawPath(
+        Path()..addRect(Rect.fromLTRB(0, 0, 90, 90)),
+        Paint()
+          ..color = Colors.blueAccent
+          ..strokeWidth = 8
+          ..style = PaintingStyle.stroke);
     super.paint(context, offset);
   }
 
@@ -215,7 +238,6 @@ class RB extends RenderCustomSingleChildLayoutBox{
 
   @override
   void performResize() {
-
     super.performResize();
   }
 
@@ -223,18 +245,17 @@ class RB extends RenderCustomSingleChildLayoutBox{
   void performLayout() {
     super.performLayout();
   }
-
 }
 
-class Delegate extends SingleChildLayoutDelegate{
-
-  var size =Size(391.4,100);
+class Delegate extends SingleChildLayoutDelegate {
+  var size = Size(391.4, 100);
 
   @override
   Size getSize(BoxConstraints constraints) {
     print(constraints);
     return size;
   }
+
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
     return new BoxConstraints.tight(size);
@@ -245,4 +266,3 @@ class Delegate extends SingleChildLayoutDelegate{
     return size != oldDelegate.size;
   }
 }
-
