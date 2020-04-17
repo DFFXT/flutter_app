@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets/flutter_widgets.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 const numberOfItems = 5001;
 const minItemHeight = 20.0;
@@ -53,7 +54,21 @@ class _ScrollablePositionedListPageState
       builder: (context, orientation) => Column(
         children: <Widget>[
           Expanded(
-            child: list(orientation),
+            child: SmartRefresher(
+              controller: RefreshController(),
+              header: ClassicHeader(
+          height: 45.0,
+          releaseText: '松开手刷新',
+          refreshingText: '刷新中',
+          completeText: '刷新完成',
+        failedText: '刷新失败',
+          idleText: '下拉刷新',
+              ),
+              footer: ClassicFooter(),
+              enablePullUp: true,
+              enablePullDown: true,
+              child: list(orientation),
+            ),
           ),
           positionsView,
           Row(
@@ -86,16 +101,18 @@ class _ScrollablePositionedListPageState
     ],
   );
 
-  Widget list(Orientation orientation) => ScrollablePositionedList.builder(
-    itemCount: numberOfItems,
-    itemBuilder: (context, index) => item(index, orientation),
-    itemScrollController: itemScrollController,
-    itemPositionsListener: itemPositionsListener,
-    reverse: reversed,
-    scrollDirection: orientation == Orientation.portrait
-        ? Axis.vertical
-        : Axis.horizontal,
-  );
+  Widget list(Orientation orientation) =>
+      ListView.builder(
+        itemCount: numberOfItems,
+        itemBuilder: (context, index) => item(index, orientation),
+        controller: ScrollController(),
+        //itemPositionsListener: itemPositionsListener,
+        reverse: reversed,
+        scrollDirection: orientation == Orientation.portrait
+            ? Axis.vertical
+            : Axis.horizontal,
+      )
+      ;
 
   Widget get positionsView => ValueListenableBuilder<Iterable<ItemPosition>>(
     valueListenable: itemPositionsListener.itemPositions,
