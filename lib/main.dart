@@ -1,5 +1,6 @@
 import 'package:exp/base/BasePage.dart';
 import 'package:exp/base/LifeCycleOwner.dart';
+import 'package:exp/module/next/LandingPage.dart';
 import 'package:exp/module/next/Page2.dart';
 import 'package:exp/module/next/ScrollablePositionedListPage.dart';
 import 'package:flutter/material.dart';
@@ -103,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
             GestureDetector(
               onTapUp: (e){
                 Navigator.push(context, new MaterialPageRoute(builder: (ctx){
-                  return ScrollablePositionedListPage();
+                  return LandingPage();
                 }));
               },
               child: Text(

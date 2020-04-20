@@ -49,43 +49,46 @@ class _ScrollablePositionedListPageState
   }
 
   @override
-  Widget build(BuildContext context) => Material(
-    child: OrientationBuilder(
-      builder: (context, orientation) => Column(
-        children: <Widget>[
-          Expanded(
-            child: SmartRefresher(
-              controller: RefreshController(),
-              header: ClassicHeader(
-          height: 45.0,
-          releaseText: '松开手刷新',
-          refreshingText: '刷新中',
-          completeText: '刷新完成',
-        failedText: '刷新失败',
-          idleText: '下拉刷新',
+  Widget build(BuildContext context) {
+    return Material(
+      child: OrientationBuilder(
+        builder: (context, orientation) => Column(
+          children: <Widget>[
+            Expanded(
+              child: SmartRefresher(
+
+                controller: RefreshController(),
+                header: ClassicHeader(
+                  height: 45.0,
+                  releaseText: '松开手刷新',
+                  refreshingText: '刷新中',
+                  completeText: '刷新完成',
+                  failedText: '刷新失败',
+                  idleText: '下拉刷新',
+                ),
+                footer: ClassicFooter(),
+                enablePullUp: true,
+                enablePullDown: true,
+                child: list(orientation),
               ),
-              footer: ClassicFooter(),
-              enablePullUp: true,
-              enablePullDown: true,
-              child: list(orientation),
             ),
-          ),
-          positionsView,
-          Row(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  scrollControlButtons,
-                  jumpControlButtons,
-                  alignmentControl,
-                ],
-              ),
-            ],
-          )
-        ],
+            positionsView,
+            Row(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    scrollControlButtons,
+                    jumpControlButtons,
+                    alignmentControl,
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 
   Widget get alignmentControl => Row(
     mainAxisSize: MainAxisSize.max,
