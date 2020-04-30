@@ -5,26 +5,34 @@ import 'package:flutter/services.dart';
 
 typedef void ChannelCallback(String method, dynamic argument);
 
-class BasePage {
-  static MethodChannel _channel = MethodChannel("intent");
+class ChannelUtil {
+  static Map<ChannelType,MethodChannel> _channel = HashMap();
 
-  static BasePage _instance;
+  static Map<ChannelType,ChannelUtil> _instance = HashMap();
+
+  MethodChannel __channel;
 
   List<ChannelObserver> _observer;
 
-  BasePage._init();
-
-  static BasePage getInstance() {
-    if (_instance == null) {
-      _instance = new BasePage._init();
-      _instance._listen();
+  ChannelUtil._init(ChannelType type){
+    if(!_channel.containsKey(type)){
+      __channel = MethodChannel(type.toString());
+      _channel[type] = __channel;
     }
-    return _instance;
+  }
+
+  static ChannelUtil getInstance(ChannelType type) {
+    if (_instance[type] == null) {
+      var ins = new ChannelUtil._init(type);
+      _instance[type]=ins;
+      _instance[type]._listen();
+    }
+    return _instance[type];
   }
 
   void _listen() {
     // ignore: missing_return
-    _channel.setMethodCallHandler((MethodCall call) {
+    __channel.setMethodCallHandler((MethodCall call) {
       ChannelArgument argument = call.arguments;
       for(ChannelObserver observer in _observer){
         if(observer.flag == argument.flag){
@@ -44,7 +52,7 @@ class BasePage {
   }
   
   Future<dynamic> invoke(String method, ChannelArgument argument){
-    return _channel.invokeMethod(method,argument.value());
+    return __channel.invokeMethod(method,argument.value());
   }
 }
 
@@ -62,5 +70,15 @@ class ChannelArgument{
   const ChannelArgument([this.flag,this.argument]);
   dynamic value() {
     return {"flag":flag,"argument":argument};
+  }
+}
+
+enum ChannelType{
+  INTENT,KEYBOARD
+}
+
+class KeyBoard{
+  void press(String method, dynamic argument){
+
   }
 }

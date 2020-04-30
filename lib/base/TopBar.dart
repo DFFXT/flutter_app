@@ -4,31 +4,37 @@ import 'package:flutter/material.dart';
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize {
-    return Size.fromHeight(56);
+    return Size.fromHeight(40);
   }
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.height);
-    return Container(
-      height: double.infinity,
-      decoration: BoxDecoration(boxShadow: <BoxShadow>[
-        BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0, -2),
-            spreadRadius: 0,
-            blurRadius: 0),
-        BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0, 2),
-            spreadRadius: 0,
-            blurRadius: 0),
-      ]),
+    return Material(
+      color: Colors.blueAccent,
+      elevation: 3,
       child: Container(
-        padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top, 0, 0),
-        color: Colors.deepOrange,
-        alignment: Alignment(-1,0),
-        child: Text("xxx"),
+        margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).padding.top, 0, 0),
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 40,
+              height: 40,
+              child: Image.asset("assets/icon_bd.png"),
+            )
+            ,
+            Expanded(
+              child: Container(
+                alignment: Alignment(0,0),
+                child: Text("title",maxLines: 1,softWrap: false,overflow: TextOverflow.ellipsis,),
+              ),
+            ),
+            Container(
+              width: 40,
+              height: 40,
+              child: Image.asset("assets/icon_kg.png"),
+            )
+          ],
+        ),
       ),
     );
   }

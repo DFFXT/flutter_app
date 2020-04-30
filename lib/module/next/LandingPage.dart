@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../editor/editor.dart';
+
 class LandingPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -48,17 +50,24 @@ class _LandingPageState extends State {
                 onTap: (){
 
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.black,
-                        width: 0.1
-                      )
-                    )
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (ctx){
+                      return EditorPage();
+                    }));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                                color: Colors.black,
+                                width: 0.1
+                            )
+                        )
+                    ),
+                    padding: EdgeInsets.all(10),
+                    child: Text("${index+1}. "+list[index]),
                   ),
-                  padding: EdgeInsets.all(10),
-                  child: Text("${index+1}. "+list[index]),
                 ),
               );
             },
@@ -87,6 +96,7 @@ class Bottom extends StatelessWidget implements PreferredSizeWidget{
           width: double.infinity,
           height: 64,
           color: Colors.cyanAccent,
+
           child: LayoutBuilder(
             builder: (ctx,cons){
               print(cons);

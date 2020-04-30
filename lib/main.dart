@@ -21,7 +21,7 @@ class MyApp extends StatefulWidget {
 class HomeState extends LifeCycleOwnerState{
 
   HomeState(){
-    BasePage.getInstance().invoke("test",ChannelArgument("123","ddddddd")).then((onValue){
+    ChannelUtil.getInstance(ChannelType.INTENT).invoke("test",ChannelArgument("123","ddddddd")).then((onValue){
       print(onValue);
     },onError: (e){
       print("then error $e");
@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
+    var node = FocusNode();
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -98,6 +98,37 @@ class _MyHomePageState extends State<MyHomePage> {
             )
             )
             ,
+
+            RawKeyboardListener(
+              focusNode: FocusNode() ,
+              onKey: (e){
+                print(e);
+              },
+              child: TextField(
+                onChanged: (text) {
+
+                },
+                maxLines: null,
+                decoration: InputDecoration(
+                    prefix: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          FocusScope.of(context).requestFocus();
+                        });
+                      },
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        margin: EdgeInsets.only(left:4,right: 10),
+                        color: Colors.deepOrange,
+                        child: Icon(Icons.minimize,size: 10,),
+                      ),
+                    ),
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    isDense: true),
+              ),
+            ),
             Text(
               'You have pushed the button this many times:',
             ),
