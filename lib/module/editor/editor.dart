@@ -483,7 +483,6 @@ class _EditorState extends LifeCycleOwnerState {
   }
 
   void _save() async {
-
     Directory directory = await getTemporaryDirectory();
     var saveFile = new File(directory.path + "/save.txt");
     if (!await saveFile.exists()) {
