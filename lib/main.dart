@@ -23,7 +23,7 @@ class HomeState extends LifeCycleOwnerState{
   HomeState(){
     ChannelUtil.getInstance(ChannelType.INTENT).invoke("test",ChannelArgument("123","ddddddd")).then((onValue){
       print(onValue);
-    },onError: (e){
+    },onError: (e){ 
       print("then error $e");
     }).whenComplete((){
       print("Complete");
