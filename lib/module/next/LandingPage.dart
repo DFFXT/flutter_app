@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -53,7 +55,7 @@ class _LandingPageState extends State {
                 child: GestureDetector(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (ctx){
-                      return EditorPage();
+                      return Text("ff");
                     }));
                   },
                   child: Container(
