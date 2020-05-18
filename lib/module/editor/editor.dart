@@ -73,7 +73,7 @@ class _EditorState extends LifeCycleOwnerState {
 
     styleList.add(Format(image: "assets/uicon.jpg",text: 'H1',callback: (){
       var item=_findFocusItem();
-      if(item!=null&&item.textData.style!=TextData.STYLE_H1){
+      if(item!=null&&item.textData.style!=TextData.STYLE_IMAGE_DESC&&item.textData.style!=TextData.STYLE_H1){
         setState(() {
           item.textData.style = TextData.STYLE_H1;
         });
@@ -81,7 +81,7 @@ class _EditorState extends LifeCycleOwnerState {
     }));
     styleList.add(Format(image: "assets/uicon.jpg",text: 'H2',callback: (){
       var item=_findFocusItem();
-      if(item!=null&&item.textData.style!=TextData.STYLE_H2){
+      if(item!=null&&item.textData.style!=TextData.STYLE_IMAGE_DESC&&item.textData.style!=TextData.STYLE_H2){
         reFocus=true;
         setState(() {
           item.textData.style = TextData.STYLE_H2;
@@ -90,7 +90,7 @@ class _EditorState extends LifeCycleOwnerState {
     }));
     styleList.add(Format(image: "assets/uicon.jpg",text: 'OL',callback: (){
       var item=_findFocusItem();
-      if(item!=null&&item.textData.style!=TextData.STYLE_OL){
+      if(item!=null&&item.textData.style!=TextData.STYLE_IMAGE_DESC&&item.textData.style!=TextData.STYLE_OL){
         setState(() {
           item.textData.style = TextData.STYLE_OL;
         });
@@ -98,7 +98,7 @@ class _EditorState extends LifeCycleOwnerState {
     }));
     styleList.add(Format(image: "assets/uicon.jpg",text: 'UL',callback: (){
       var item=_findFocusItem();
-      if(item!=null&&item.textData.style!=TextData.STYLE_UL){
+      if(item!=null&&item.textData.style!=TextData.STYLE_IMAGE_DESC&&item.textData.style!=TextData.STYLE_UL){
         setState(() {
           item.textData.style = TextData.STYLE_UL;
         });
@@ -106,7 +106,7 @@ class _EditorState extends LifeCycleOwnerState {
     }));
     styleList.add(Format(image: "assets/uicon.jpg",text: 'TEXT',callback: (){
       var item=_findFocusItem();
-      if(item!=null&&item.textData.style!=TextData.STYLE_TEXT){
+      if(item!=null&&item.textData.style!=TextData.STYLE_IMAGE_DESC&&item.textData.style!=TextData.STYLE_TEXT){
         setState(() {
           item.textData.style = TextData.STYLE_TEXT;
         });
@@ -247,7 +247,6 @@ class _EditorState extends LifeCycleOwnerState {
           if(localData!=null){
             lineData = localData;
           }
-          print("-xxxxxxxx--${data.data}");
           return Column(
             children: <Widget>[
               Container(
@@ -365,9 +364,12 @@ class _EditorState extends LifeCycleOwnerState {
                                       constraints: BoxConstraints.loose(Size(
                                           MediaQuery.of(context).size.width,
                                           double.infinity)),
-                                      child: Image.file(
-                                        File(item.imageData.image),
-                                        fit: BoxFit.fitWidth,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(20),
+                                        child: Image.file(
+                                          File(item.imageData.image),
+                                          fit: BoxFit.fitWidth,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -476,6 +478,7 @@ class _EditorState extends LifeCycleOwnerState {
     );
   }
 
+
   @override
   void dispose() {
     super.dispose();
@@ -506,7 +509,6 @@ class _EditorState extends LifeCycleOwnerState {
     }
     List res = jsonDecode(await saveFile.readAsString());
     return res.map((v){
-      print(LineData.fromJson(v));
       return LineData.fromJson(v);
     }).toList();
   }
