@@ -1,5 +1,4 @@
-import 'dart:html';
-
+import 'package:exp/module/draw/DrawPanel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -55,7 +54,7 @@ class _LandingPageState extends State {
                 child: GestureDetector(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (ctx){
-                      return Text("ff");
+                      return DrawPanel();
                     }));
                   },
                   child: Container(
