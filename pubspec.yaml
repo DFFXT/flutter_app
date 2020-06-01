@@ -31,8 +31,6 @@ dependencies:
   json_serializable: ^3.3.0
   json_annotation: ^3.0.1
   permission_handler: ^5.0.0+hotfix.4
-  image_gallery_saver: ^1.2.2
-  provider: ^4.1.1
 
 
 dev_dependencies:

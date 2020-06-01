@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -36,7 +38,7 @@ class TextData {
   TextData({String text,this.center, this.textColor, this.style}){
     setText(text);
   }
-  factory TextData.fromJson(Map<String, dynamic> json) => json==null?null:_$TextDataFromJson(json);
+  factory TextData.fromJson(Map<String, dynamic> json) => _$TextDataFromJson(json);
   Map<String, dynamic> toJson() => _$TextDataToJson(this);
   void setText(String text){
     if(text==null || text == ''){
@@ -55,7 +57,7 @@ class ImageData {
   String image;
 
   ImageData(this.image, {this.width, this.height});
-  factory ImageData.fromJson(Map<String, dynamic> json) => json==null?null: _$ImageDataFromJson(json);
+  factory ImageData.fromJson(Map<String, dynamic> json) => _$ImageDataFromJson(json);
   Map<String, dynamic> toJson() => _$ImageDataToJson(this);
 }
 
