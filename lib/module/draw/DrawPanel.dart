@@ -53,7 +53,7 @@ class DrawPanel extends StatelessWidget {
         //使用Provider必须在widget的ancestor节点处使用
         child: ChangeNotifierProvider<Day>(
           create: (_)=>Day(),
-          child: TestProvider(),
+          child: _Panel(),
         ),
       ),
     );
@@ -134,30 +134,26 @@ class _PanelState extends LifeCycleOwnerState {
     );
   }
 }
-
+var o = Oval();
 class Painter extends CustomPainter {
-  ui.Image image;
 
   Painter(List<Operation> list) {
     this.data = list;
-    ui.PictureRecorder p = ui.PictureRecorder();
-    Canvas canvas = Canvas(p);
-    canvas.drawColor(Colors.blue, BlendMode.xor);
-    p.endRecording().toImage(300, 300).then((value) {
-      image = value;
-    });
   }
 
   Paint _paint = Paint();
   var data = List<Operation>();
 
+
   @override
   void paint(Canvas canvas, Size size) {
+    o.tryImmutable(size);
+    o.draw(canvas,size);
     _paint.color = Colors.deepOrange;
     for (int i = 0; i < data.length; i++) {
       data[i].draw(canvas,size);
     }
-    //Oval().draw(canvas,size);
+
   }
 
   @override

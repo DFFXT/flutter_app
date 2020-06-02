@@ -1,7 +1,10 @@
 import 'package:exp/module/draw/DrawPanel.dart';
+import 'package:exp/module/music/ui/MusicPage.dart';
+import 'package:exp/module/next/Route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:picker/picker.dart';
 
 import '../editor/editor.dart';
 
@@ -13,12 +16,12 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State {
-  List<String> list = List<String>();
+  List<RouteItem> list = List();
 
   _LandingPageState(){
-    list.add("value");
-    list.add("value");
-    list.add("value");
+    list.add(RouteItem("draw panel",()=>DrawPanel()));
+    list.add(RouteItem("editor",()=>EditorPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
   }
 
   @override
@@ -54,7 +57,7 @@ class _LandingPageState extends State {
                 child: GestureDetector(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (ctx){
-                      return DrawPanel();
+                      return list[index].widgetCreate();
                     }));
                   },
                   child: Container(
@@ -67,7 +70,7 @@ class _LandingPageState extends State {
                         )
                     ),
                     padding: EdgeInsets.all(10),
-                    child: Text("${index+1}. "+list[index]),
+                    child: Text(list[index].name),
                   ),
                 ),
               );
