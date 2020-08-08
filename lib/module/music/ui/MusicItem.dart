@@ -44,6 +44,7 @@ class ConstraintLayout extends MultiChildRenderObjectWidget{
 
 class _ConstraintLayoutRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox, ConstraintLayoutParams>,
     RenderBoxContainerDefaultsMixin<RenderBox, ConstraintLayoutParams>,DebugOverflowIndicatorMixin{
+  HashMap<Object,RenderBox> render = HashMap();
   List<RenderBox> renderList = List();
   List<Child> children = List();
   _ConstraintLayoutRenderObject({List<Child> children = const <Child>[]}){
