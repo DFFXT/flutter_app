@@ -34,55 +34,64 @@ class _MusicItemState extends State<MusicItem>{
 }
 
 class ConstraintLayout extends MultiChildRenderObjectWidget{
-  ConstraintLayout({Key key,List<Child> children}):super(key:key,children:children);
+  final List<Child> widgets;
+  ConstraintLayout({Key key,this.widgets}):super(key:key,children:widgets.map((e) => e.widget).toList(growable: false));
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _ConstraintLayoutRenderObject(children: children);
-  }
-  @override
-  void updateRenderObject(BuildContext context, RenderObject renderObject) {
-    super.updateRenderObject(context, renderObject);
+    return _ConstraintLayoutRenderObject(children: widgets);
   }
 }
 
 class _ConstraintLayoutRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox, ConstraintLayoutParams>,
     RenderBoxContainerDefaultsMixin<RenderBox, ConstraintLayoutParams>,DebugOverflowIndicatorMixin{
-  HashMap<Object,RenderBox> render = HashMap();
   List<RenderBox> renderList = List();
-  HashMap<Object,Child> children = HashMap();
+  List<Child> children = List();
   _ConstraintLayoutRenderObject({List<Child> children = const <Child>[]}){
     for(int i=0;i<children.length;i++){
-      this.children[children[i].id] = children[i];
+      this.children.add(children[i]);
     }
   }
-  bool relayout = true;
   @override
   void performLayout() {
-
+    renderList.clear();
     var child = firstChild;
-    var lastChild = (child.parentData as ContainerBoxParentData).nextSibling as RenderBox;
-    if(lastChild!=null){
-      var box = BoxConstraints.loose(Size(constraints.maxWidth,constraints.maxHeight));
-      lastChild.layout(box,parentUsesSize: true);
-      var remain = box.maxWidth - lastChild.size.width;
-      child.layout(BoxConstraints.loose(Size(remain,constraints.maxHeight)),parentUsesSize: true);
-      var width = lastChild.size.width + child.size.width;
-      var height = max(lastChild.size.height , child.size.height);
-      size = constraints.constrain(Size(width,height));
-      print(child.size);
-      print(lastChild.size);
-      print(size);
-      (lastChild.parentData as ConstraintLayoutParams).offset = Offset(size.width-lastChild.size.width,0);
+    while(child!=null){
+      var lp = child.parentData as ConstraintLayoutParams;
+      renderList.add(child);
+      child = lp.nextSibling;
     }
 
+    var usedWidth = 0.0;
+    var maxHeight = 0.0;
+    for(int i=renderList.length-1;i>=0;i--){
+      var child = renderList[i];
+      if(child!=firstChild){
+        var box = BoxConstraints.loose(Size(constraints.maxWidth -usedWidth,constraints.maxHeight));
+        child.layout(box,parentUsesSize: true);
+        var lp = child.parentData as ConstraintLayoutParams;
+        usedWidth += child.size.width;
+        lp.offset = Offset(constraints.maxWidth - usedWidth,0);
+        maxHeight = max(maxHeight, child.size.height);
+      }else{
+        var remain = constraints.maxWidth - usedWidth;
+        child.layout(BoxConstraints.loose(Size(remain,constraints.maxHeight)),parentUsesSize: true);
+        maxHeight = max(maxHeight, child.size.height);
+        var width = usedWidth + child.size.width;
+        size = constraints.constrain(Size(width,maxHeight));
+      }
+    }
+    for(int i=0;i<renderList.length;i++){
+      var lp = renderList[i].parentData as ConstraintLayoutParams;
+      if(children[i].centerVertical){
+        lp.offset = lp.offset.translate(0, (maxHeight - renderList[i].size.height)/2);
+      }
+      if(children[i].matchVertical){
+
+      }
+    }
 
   }
 
-  @override
-  void markNeedsLayout() {
-    relayout = true;
-    super.markNeedsLayout();
-  }
   @override
   void paint(PaintingContext context, Offset offset) {
     var child = firstChild;
@@ -103,24 +112,9 @@ class _ConstraintLayoutRenderObject extends RenderBox with ContainerRenderObject
 class ConstraintLayoutParams extends MultiChildLayoutParentData{
 }
 
-enum ConstraintType{
-  SHOW_FULL
-}
-
-abstract class Constraint{
-  ConstraintType type;
-  Object id;
-}
-
-class ShowFull extends Constraint{
-  ShowFull(Object id){
-    this.type = ConstraintType.SHOW_FULL;
-    this.id=id;
-  }
-}
-
-class Child extends LayoutId{
-  final Object id;
-  final List<Constraint> constraint;
-  Child({@required this.id, Widget widget,this.constraint = const <Constraint>[]}):super(id:id,child:widget);
+class Child{
+  final Widget widget;
+  final bool centerVertical;
+  final bool matchVertical;
+  Child({@required this.widget,this.centerVertical = false,this.matchVertical = false});
 }

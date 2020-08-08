@@ -1,3 +1,4 @@
+import 'package:exp/GlobalParams.dart';
 import 'package:exp/base/BasePage.dart';
 import 'package:exp/base/LifeCycleOwner.dart';
 import 'package:exp/module/next/LandingPage.dart';
@@ -5,15 +6,18 @@ import 'package:exp/module/next/Page2.dart';
 import 'package:exp/module/next/ScrollablePositionedListPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => GlobalParams(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-
     return HomeState();
   }
 }
@@ -21,6 +25,9 @@ class MyApp extends StatefulWidget {
 class HomeState extends LifeCycleOwnerState{
 
   HomeState(){
+    ChannelUtil.getInstance(ChannelType.INTENT).listen(ChannelObserver(this,"s",(m,a){
+
+    }));
     ChannelUtil.getInstance(ChannelType.INTENT).invoke("test",ChannelArgument("123","ddddddd")).then((onValue){
       print(onValue);
     },onError: (e){ 
@@ -34,13 +41,14 @@ class HomeState extends LifeCycleOwnerState{
 
   @override
   Widget build(BuildContext context) {
+    print("hhh-rebuild");
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Fltter Demo Home Page'),
+      home: MyHomePage(title: 'Fltter Demo Home Page ' + Provider.of<GlobalParams>(context).state.toString()),
       routes: <String,WidgetBuilder>{
         'page2': (ctx){return Page2();}
       },
@@ -87,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             GestureDetector(
               onTapUp: (e){
+                Provider.of<GlobalParams>(context,listen: false).setState(12);
                 print("---> ${e.globalPosition.dx}");
               },
               child: Container(

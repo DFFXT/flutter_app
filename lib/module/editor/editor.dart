@@ -232,6 +232,7 @@ class _EditorState extends LifeCycleOwnerState {
 
   @override
   Widget build(BuildContext context) {
+    print("dsfsdfsf");
     return FutureBuilder(
       future: localLineFuture,
       builder: (ctx,data){

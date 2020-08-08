@@ -1,10 +1,13 @@
+import 'package:exp/GlobalParams.dart';
 import 'package:exp/module/draw/DrawPanel.dart';
+import 'package:exp/module/listView/TestPage.dart';
 import 'package:exp/module/music/ui/MusicPage.dart';
 import 'package:exp/module/next/Route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:picker/picker.dart';
+import 'package:provider/provider.dart';
 
 import '../editor/editor.dart';
 
@@ -21,6 +24,26 @@ class _LandingPageState extends State {
   _LandingPageState(){
     list.add(RouteItem("draw panel",()=>DrawPanel()));
     list.add(RouteItem("editor",()=>EditorPage()));
+    list.add(RouteItem("testPage",()=>TestPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
+    list.add(RouteItem("ljpg",()=>MusicPage()));
     list.add(RouteItem("ljpg",()=>MusicPage()));
   }
 
@@ -56,6 +79,7 @@ class _LandingPageState extends State {
                 },
                 child: GestureDetector(
                   onTap: (){
+                    Provider.of<GlobalParams>(context,listen: false).setState(33);
                     Navigator.push(context, MaterialPageRoute(builder: (ctx){
                       return list[index].widgetCreate();
                     }));

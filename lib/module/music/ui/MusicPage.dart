@@ -42,24 +42,24 @@ class _MusicState extends State<_MusicWidget> {
       width: 300,
       color: Colors.blue,
       child: ConstraintLayout(
-        children: <Child>[
+        widgets: <Child>[
           Child(
-            id: "B",
             widget: ConstraintLayout(
-              children: [
+              widgets: [
                 Child(
-                  id: "C",
                   widget: Text("CCCCC"),
                 ),
                 Child(
-                  id: "D",
                   widget: Text("DDDDDDDD"),
                 )
               ],
             ),
           ),Child(
-            id: "A",
-            widget: Text("AAAAAAAAAAAAAAAAAAAA"),
+            widget: ConstrainedBox(
+              constraints: BoxConstraints.loose(Size(1000,1000)),
+              child: Text("AAAAAAAAAAAAAAAAAAAA"),
+            ),
+            centerVertical: true,
           )
         ],
       ),

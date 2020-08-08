@@ -33,6 +33,7 @@ class ChannelUtil {
   void _listen() {
     // ignore: missing_return
     __channel.setMethodCallHandler((MethodCall call) {
+      print("sdfsafsdfffffffffffff");
       ChannelArgument argument = call.arguments;
       for(ChannelObserver observer in _observer){
         if(observer.flag == argument.flag){
